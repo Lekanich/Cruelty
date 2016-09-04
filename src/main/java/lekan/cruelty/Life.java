@@ -121,13 +121,13 @@ public class Life {
 
 	private static void showHealth(PrintStream stream, List<Person> people) {
 		long healthyPeople = people.stream().filter(person -> person.getMaxHealth() > person.getHealth()).count();
-		stream.printf("Healthy people count: %6.3f%%", healthyPeople * 100.0 / people.size());
+		stream.printf("Healthy people count: %5.2f%%", healthyPeople * 100.0 / people.size());
 		stream.println();
 	}
 
 	private static void showCruelty(PrintStream stream, List<Person> people) {
 		for (Cruelty cruelty : Cruelty.values()) {
-			stream.printf(cruelty.name() + ": %6.3f%%",
+			stream.printf(cruelty.name() + ": %5.2f%%",
 					people.stream().filter(person -> person.getBehavior().getCruelty() == cruelty).count() * 100.0 / people.size());
 			stream.println();
 		}
@@ -139,7 +139,7 @@ public class Life {
 	}
 
 	private void showCompleteSteps(PrintStream stream) {
-		stream.printf("Completed steps: %6.3f", stepComplete * 100.0 / stepStart);
+		stream.printf("Completed steps: %5.2f%%", stepComplete * 100.0 / stepStart);
 		stream.println();
 	}
 }

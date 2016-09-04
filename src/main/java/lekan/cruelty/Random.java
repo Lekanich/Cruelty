@@ -24,8 +24,9 @@ final public class Random {
 	}
 
 	public static int step() {
-		return (int) (Math.round(Math.random() * 2) - 1);
+		return RANDOM.nextInt(3) - 1;
 	}
+
 	public static Behavior behavior() {
 		return new Behavior(cruelty());
 	}
