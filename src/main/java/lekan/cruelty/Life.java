@@ -42,6 +42,8 @@ public class Life {
 		Stack<Person> stack = new Stack<>();
 		for (Cell cell : area) {
 			for (Person person : cell.getAlivePeople()) {
+				if (!person.isAlive()) continue;
+
 			// find new cell
 				stepStart++;
 				Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
@@ -60,10 +62,14 @@ public class Life {
 
 	// check field, if in one field 2 or mor people, they can start to kil each other
 		for (Cell cell : area.findDenselyCell()) {
-			for (Person person : cell.getAlivePeople()) {
+			for (Person person : cell.getPeople()) {
+				if (!person.isAlive()) continue;
+
 				if (!wantKill(person)) continue;
 
-				Person randomPerson = randomPerson(cell.getAlivePeople(), person);
+				Person randomPerson = randomPerson(cell.getAlivePeople());
+				if (randomPerson == null) continue;
+
 				randomPerson.setHealth(randomPerson.getHealth() - person.getStrong());
 			}
 		}

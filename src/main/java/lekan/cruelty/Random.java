@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 import lekan.cruelty.Area.Cell;
 import lekan.cruelty.Behavior.Cruelty;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -42,22 +44,28 @@ final public class Random {
 	}
 
 	public static int health() {
-		return (int) (Math.random() * 10) + 1;
+		return RANDOM.nextInt(10) + 1;
 	}
 
 	public static int strong() {
-		return (int) (Math.random() * 20) + 1;
+		return RANDOM.nextInt(20) + 1;
 	}
 
 	public static Cell cell(Area area) {
-		return area.field[(int) (area.row() * Math.random())][(int) (area.column() * Math.random())];
+		return area.field[RANDOM.nextInt(area.row())][RANDOM.nextInt(area.column())];
 	}
 
 	public static Person randomPerson(List<Person> persons, Person... except) {
-		HashSet<Person> set = new HashSet<>(Arrays.asList(except));
+		HashSet<Person> set = new HashSet<>(asList(except));
 		List<Person> cleanPersons = persons.stream()
-				.filter(person -> !set.contains(except))
-				.collect(Collectors.toList());
-		return cleanPersons.get(RANDOM.nextInt(cleanPersons.size()));
+				.filter(person -> !set.contains(person))
+				.collect(toList());
+
+		if (cleanPersons.isEmpty()) return null;
+		return randomPerson(cleanPersons);
+	}
+
+	public static Person randomPerson(List<Person> persons) {
+		return persons.get(RANDOM.nextInt(persons.size()));
 	}
 }

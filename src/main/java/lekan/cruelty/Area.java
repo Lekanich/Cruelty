@@ -71,6 +71,10 @@ final public class Area implements Iterable<Area.Cell> {
 			people.remove(person);
 		}
 
+		public List<Person> getPeople() {
+			return people;
+		}
+
 		public List<Person> getAlivePeople() {
 			return people.stream().filter(Person::isAlive).collect(Collectors.toList());
 		}
