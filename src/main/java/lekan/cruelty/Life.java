@@ -1,16 +1,15 @@
 package lekan.cruelty;
 
+import lekan.cruelty.Area.Cell;
+import lekan.cruelty.Behavior.Cruelty;
+
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import lekan.cruelty.Area.Cell;
-import lekan.cruelty.Behavior.Cruelty;
-
-import static lekan.cruelty.Random.randomPerson;
-import static lekan.cruelty.Random.cell;
-import static lekan.cruelty.Random.step;
+import static lekan.cruelty.Random.*;
 
 
 /**
@@ -19,7 +18,7 @@ import static lekan.cruelty.Random.step;
  * @since 0.1.0
  */
 public class Life {
-	List<Person> people;
+	List<Person> people = new ArrayList<>();
 	Area area;
 	long stepStart = 0;
 	long stepComplete = 0;
@@ -31,35 +30,41 @@ public class Life {
 		SHOW_FIELD
 	}
 
-	public Life(List<Person> people, Area area) {
-		this.people = people;
+	public Life(Area area) {
 		this.area = area;
+	}
 
-		for (Person person : people) {
-			cell(area).addPerson(person);
-		}
+	public void bringIntoWorld(Person person) {
+		cell(area).addPerson(person);
 	}
 
 	public void doIt() {
 		// move
 		Stack<Person> stack = new Stack<>();
-		for (Cell cell : area) {
-			for (Person person : cell.getAlivePeople()) {
-				if (!person.isAlive()) continue;
+		for (int i = 0; i < area.row(); i++) {
+			for (int j = 0; j < area.column(); j++) {
+				Cell cell = area.getCell(i, j);
+				for (Person person : cell.getAlivePeople()) {
+					if (!person.isAlive()) {
+						continue;
+					}
 
-				// find new cell
-				stepStart++;
-				Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
-				if (newCell == cell) continue;
+					// find new cell
+					stepStart++;
+					Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
+					if (newCell == cell) {
+						continue;
+					}
 
-				// refresh cell for person
-				stepComplete++;
-				newCell.addPerson(person);
-				stack.push(person);
-			}
+					// refresh cell for person
+					stepComplete++;
+					newCell.addPerson(person);
+					stack.push(person);
+				}
 
-			while (!stack.isEmpty()) {
-				cell.removePerson(stack.pop());
+				while (!stack.isEmpty()) {
+					cell.removePerson(stack.pop());
+				}
 			}
 		}
 

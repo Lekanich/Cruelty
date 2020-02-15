@@ -1,13 +1,12 @@
 package lekan.cruelty;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -16,41 +15,8 @@ import lombok.experimental.FieldDefaults;
  * @since 0.1.0
  */
 @RequiredArgsConstructor
-final public class Area implements Iterable<Area.Cell> {
-	Cell[][] field;
-
-	final public class CellIterator implements Iterator<Cell> {
-		int currentX = 0;
-		int currentY = 0;
-
-		@Override
-		public boolean hasNext() {
-			return currentX < field.length && currentY + 1 < field[currentY].length;
-		}
-
-		@Override
-		public Cell next() {
-			currentY++;
-			if (currentY == field[currentX].length) {
-				currentY = 0;
-				currentX++;
-			}
-			if (currentX == field.length) {
-				throw new IllegalAccessError("Next element not found");
-			}
-
-			return field[currentX][currentY];
-		}
-
-		@Override
-		public void forEachRemaining(Consumer<? super Cell> action) {
-			for (Cell[] aField : field) {
-				for (Cell anAField : aField) {
-					action.accept(anAField);
-				}
-			}
-		}
-	}
+final public class Area {
+	private final Cell[][] field;
 
 	@RequiredArgsConstructor
 	@FieldDefaults(makeFinal = true)
@@ -128,10 +94,5 @@ final public class Area implements Iterable<Area.Cell> {
 			column = 0;
 		}
 		return field[row][column];
-	}
-
-	@Override
-	public Iterator<Cell> iterator() {
-		return new CellIterator();
 	}
 }

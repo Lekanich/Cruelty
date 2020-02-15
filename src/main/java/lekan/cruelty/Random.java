@@ -1,10 +1,12 @@
 package lekan.cruelty;
 
-import java.util.HashSet;
-import java.util.List;
-import org.apache.commons.lang3.RandomStringUtils;
 import lekan.cruelty.Area.Cell;
 import lekan.cruelty.Behavior.Cruelty;
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.util.HashSet;
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
@@ -42,7 +44,7 @@ final public class Random {
 	}
 
 	public static Cell cell(Area area) {
-		return area.field[RANDOM.nextInt(area.row())][RANDOM.nextInt(area.column())];
+		return area.getCell(RANDOM.nextInt(area.row()), RANDOM.nextInt(area.column()));
 	}
 
 	public static Person randomPerson(List<Person> persons, Person... except) {

@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static lekan.cruelty.Life.OutputType.*;
 import static lekan.cruelty.Random.behavior;
@@ -25,12 +26,10 @@ public class Main {
 	}
 
 	private static void start(int humanNumber, int iterationNumber, int fieldWidth, int fieldHeight) {
-		List<Person> persons = new LinkedList<>();
-		for (int i = 0; i < humanNumber; i++) {
-			persons.add(new Person(name(), behavior(), health(), strong()));
-		}
+		Life life = new Life(new Area(fieldWidth, fieldHeight));
+		IntStream.range(0, humanNumber)
+				.forEach(i -> life.bringIntoWorld(new Person(name(), behavior(), health(), strong())));
 
-		Life life = new Life(persons, new Area(fieldWidth, fieldHeight));
 		life.dump(SHOW_ALL_CRUELTY);
 		log.info("=====================================================================");
 		life.dump(SHOW_FIELD);
