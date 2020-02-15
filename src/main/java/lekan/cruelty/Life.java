@@ -4,8 +4,10 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
+
 import lekan.cruelty.Area.Cell;
 import lekan.cruelty.Behavior.Cruelty;
+
 import static lekan.cruelty.Random.randomPerson;
 import static lekan.cruelty.Random.cell;
 import static lekan.cruelty.Random.step;
@@ -25,7 +27,8 @@ public class Life {
 	public enum OutputType {
 		SHOW_ALL_LIST, SHOW_ALL_CRUELTY, SHOW_ALL_HEALTH,
 		SHOW_ALIVE_LIST, SHOW_ALIVE_CRUELTY, SHOW_ALIVE_HEALTH,
-		SHOW_COMPLETED_STEPS
+		SHOW_COMPLETED_STEPS,
+		SHOW_FIELD
 	}
 
 	public Life(List<Person> people, Area area) {
@@ -38,18 +41,18 @@ public class Life {
 	}
 
 	public void doIt() {
-	// move
+		// move
 		Stack<Person> stack = new Stack<>();
 		for (Cell cell : area) {
 			for (Person person : cell.getAlivePeople()) {
 				if (!person.isAlive()) continue;
 
-			// find new cell
+				// find new cell
 				stepStart++;
 				Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
 				if (newCell == cell) continue;
 
-			// refresh cell for person
+				// refresh cell for person
 				stepComplete++;
 				newCell.addPerson(person);
 				stack.push(person);
@@ -60,7 +63,7 @@ public class Life {
 			}
 		}
 
-	// check field, if in one field 2 or mor people, they can start to kil each other
+		// check field, if in one field 2 or mor people, they can start to kil each other
 		for (Cell cell : area.findDenselyCell()) {
 			for (Person person : cell.getPeople()) {
 				if (!person.isAlive()) continue;
@@ -115,7 +118,20 @@ public class Life {
 				case SHOW_COMPLETED_STEPS:
 					showCompleteSteps(stream);
 					break;
+
+				case SHOW_FIELD:
+					showField(stream, area);
+					break;
 			}
+		}
+	}
+
+	private static void showField(PrintStream stream, Area area) {
+		for (int i = 0; i < area.row(); i++) {
+			for (int j = 0; j < area.column(); j++) {
+				stream.printf("|%4s|", area.getCell(i, j).toString());
+			}
+			stream.println();
 		}
 	}
 

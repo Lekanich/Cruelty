@@ -1,9 +1,7 @@
 package lekan.cruelty;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 import lekan.cruelty.Area.Cell;
 import lekan.cruelty.Behavior.Cruelty;
@@ -32,16 +30,7 @@ final public class Random {
 	}
 
 	public static Cruelty cruelty() {
-		switch ((int) (Math.random() * 3)) {
-			case 0:
-				return Cruelty.LOW;
-			case 1:
-				return Cruelty.NORMAL;
-			case 2:
-				return Cruelty.HARD;
-			default:
-				return Cruelty.MANIAC;
-		}
+		return Cruelty.values()[(int) (Math.random() * Cruelty.values().length)];
 	}
 
 	public static int health() {
