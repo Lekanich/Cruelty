@@ -2,7 +2,6 @@ package lekan.cruelty;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import static lekan.cruelty.Life.OutputType.SHOW_ALIVE_CRUELTY;
 import static lekan.cruelty.Life.OutputType.SHOW_ALIVE_HEALTH;
 import static lekan.cruelty.Life.OutputType.SHOW_ALIVE_LIST;
