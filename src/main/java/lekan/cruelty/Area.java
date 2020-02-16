@@ -3,10 +3,12 @@ package lekan.cruelty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import one.util.streamex.StreamEx;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -21,8 +23,10 @@ final public class Area {
 	@RequiredArgsConstructor
 	@FieldDefaults(makeFinal = true)
 	public static class Cell {
-		@Getter int x;
-		@Getter int y;
+		@Getter
+		int x;
+		@Getter
+		int y;
 		List<Person> people = new LinkedList<>();
 
 		public boolean isMoreThenOne() {
@@ -52,7 +56,7 @@ final public class Area {
 	}
 
 	public Area(int x, int y) {
-		if(x == 0 || y == 0) {
+		if (x == 0 || y == 0) {
 			throw new IllegalArgumentException("empty field");
 		}
 
@@ -64,9 +68,18 @@ final public class Area {
 		}
 	}
 
-	public int column() { return field[0].length; }
+	public int column() {
+		return field[0].length;
+	}
 
-	public int row() { return field.length; }
+	public int row() {
+		return field.length;
+	}
+
+	public Stream<Cell> cells() {
+		return StreamEx.of(field)
+				.flatArray(cells -> cells);
+	}
 
 	public List<Cell> findDenselyCell() {
 		List<Cell> cells = new LinkedList<>();

@@ -6,7 +6,6 @@ import lekan.cruelty.Behavior.Cruelty;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 import static lekan.cruelty.Random.*;
@@ -35,20 +34,16 @@ public class Life {
 	}
 
 	public void bringIntoWorld(Person person) {
+		this.people.add(person);
 		cell(area).addPerson(person);
 	}
 
 	public void doIt() {
 		// move
-		Stack<Person> stack = new Stack<>();
 		for (int i = 0; i < area.row(); i++) {
 			for (int j = 0; j < area.column(); j++) {
 				Cell cell = area.getCell(i, j);
 				for (Person person : cell.getAlivePeople()) {
-					if (!person.isAlive()) {
-						continue;
-					}
-
 					// find new cell
 					stepStart++;
 					Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
@@ -59,26 +54,21 @@ public class Life {
 					// refresh cell for person
 					stepComplete++;
 					newCell.addPerson(person);
-					stack.push(person);
-				}
-
-				while (!stack.isEmpty()) {
-					cell.removePerson(stack.pop());
+					cell.removePerson(person);
 				}
 			}
 		}
 
 		// check field, if in one field 2 or mor people, they can start to kil each other
 		for (Cell cell : area.findDenselyCell()) {
-			for (Person person : cell.getPeople()) {
-				if (!person.isAlive()) continue;
-
+			for (Person person : cell.getAlivePeople()) {
 				if (!wantKill(person)) continue;
 
 				Person randomPerson = randomPerson(cell.getAlivePeople());
 				if (randomPerson == null) continue;
 
-				randomPerson.setHealth(randomPerson.getHealth() - person.getStrong());
+				randomPerson.getBody()
+						.setHealth(randomPerson.getBody().getHealth() - person.getBody().getStrong());
 			}
 		}
 	}
@@ -141,7 +131,9 @@ public class Life {
 	}
 
 	private static void showHealth(PrintStream stream, List<Person> people) {
-		long healthyPeople = people.stream().filter(person -> person.getMaxHealth() > person.getHealth()).count();
+		long healthyPeople = people.stream()
+				.filter(person -> person.getBody().getMaxHealth() > person.getBody().getHealth())
+				.count();
 		stream.printf("Healthy people count: %5.2f%%", healthyPeople * 100.0 / people.size());
 		stream.println();
 	}
