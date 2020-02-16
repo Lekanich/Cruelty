@@ -19,13 +19,10 @@ import static lekan.cruelty.Random.*;
 public class Life {
 	List<Person> people = new ArrayList<>();
 	Area area;
-	long stepStart = 0;
-	long stepComplete = 0;
 
 	public enum OutputType {
 		SHOW_ALL_LIST, SHOW_ALL_CRUELTY, SHOW_ALL_HEALTH,
 		SHOW_ALIVE_LIST, SHOW_ALIVE_CRUELTY, SHOW_ALIVE_HEALTH,
-		SHOW_COMPLETED_STEPS,
 		SHOW_FIELD
 	}
 
@@ -45,15 +42,15 @@ public class Life {
 				Cell cell = area.getCell(i, j);
 				for (Person person : cell.getAlivePeople()) {
 					// find new cell
-					stepStart++;
-					Cell newCell = area.getCell(cell.getX() + step(), cell.getY() + step());
-					if (newCell == cell) {
+					int dX = step();
+					int dY = step();
+					if (dX == 0 && dY == 0) {
 						continue;
 					}
 
 					// refresh cell for person
-					stepComplete++;
-					newCell.addPerson(person);
+					area.getCell(cell.getX() + dX, cell.getY() + dY)
+							.addPerson(person);
 					cell.removePerson(person);
 				}
 			}
@@ -110,10 +107,6 @@ public class Life {
 					showHealth(stream, alives);
 					break;
 
-				case SHOW_COMPLETED_STEPS:
-					showCompleteSteps(stream);
-					break;
-
 				case SHOW_FIELD:
 					showField(stream, area);
 					break;
@@ -149,10 +142,5 @@ public class Life {
 	private static void showList(PrintStream stream, List<Person> people) {
 		stream.println("People count: " + people.size());
 		people.forEach(stream::println);
-	}
-
-	private void showCompleteSteps(PrintStream stream) {
-		stream.printf("Completed steps: %5.2f%%", stepComplete * 100.0 / stepStart);
-		stream.println();
 	}
 }

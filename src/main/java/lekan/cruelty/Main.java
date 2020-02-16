@@ -22,7 +22,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-		start(1_000, 1_000, 25, 25);
+		start(10_000, 1_000_000, 25, 25);
 		long finish = System.currentTimeMillis();
 
 		log.info("Spent: {} s", TimeUnit.MILLISECONDS.toSeconds(finish - start));
@@ -48,7 +48,7 @@ public class Main {
 
 		log.info("Completed {} iterations.", i);
 
-//		life.dump(SHOW_COMPLETED_STEPS, SHOW_ALIVE_CRUELTY, SHOW_ALIVE_LIST, SHOW_ALIVE_HEALTH);
-		life.dump(SHOW_COMPLETED_STEPS, SHOW_ALIVE_CRUELTY, SHOW_FIELD);
+//		life.dump(SHOW_ALIVE_CRUELTY, SHOW_ALIVE_LIST, SHOW_ALIVE_HEALTH);
+		life.dump(SHOW_ALIVE_CRUELTY, SHOW_FIELD);
 	}
 }
