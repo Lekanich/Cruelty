@@ -2,8 +2,6 @@ package lekan.cruelty;
 
 import lombok.extern.log4j.Log4j2;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
@@ -24,7 +22,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-		start(10000, 1_000_000, 25, 25);
+		start(1_000, 1_000, 25, 25);
 		long finish = System.currentTimeMillis();
 
 		log.info("Spent: {} s", TimeUnit.MILLISECONDS.toSeconds(finish - start));
